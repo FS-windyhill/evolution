@@ -265,6 +265,7 @@ async function handleOption(option) {
     请严格返回纯净的 JSON 格式。
     `;
     document.getElementById('options-container').innerHTML = '<div style="text-align:center; padding:20px; color:#8ecae6;">🌌 生命的蓝图正在绘制...</div>';
+    document.getElementById('story-text').innerHTML = '<div style="text-align:center; padding:20px; color:#8ecae6;">⏳ 等待命运的回响...</div>';
     await callAI(prompt);
 }
 
