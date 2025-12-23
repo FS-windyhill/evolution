@@ -181,21 +181,21 @@ async function handleOption(option) {
             energyChange = -getRandomInRange(20, 30);
             evolutionProgressChange = getRandomInRange(10, 20);
             systemPointsChange = getRandomInRange(8, 15);
-            if (luck > 90) systemPointsChange += 5;
-            if (luck < 10) systemPointsChange = Math.floor(systemPointsChange / 2);
+            if (luck > 75) systemPointsChange += 5;
+            if (luck < 20) systemPointsChange = Math.floor(systemPointsChange / 2);
             break;
         case 'hunt':
             energyChange = getRandomInRange(20, 30);
             evolutionProgressChange = getRandomInRange(2, 5);
             systemPointsChange = getRandomInRange(2, 4);
-            if (luck > 85) energyChange += 15;
-            if (luck < 15) energyChange = Math.floor(energyChange / 3);
+            if (luck > 75) energyChange += 15;
+            if (luck < 20) energyChange = Math.floor(energyChange / 3);
             break;
         case 'rest':
             energyChange = getRandomInRange(8, 15);
             evolutionProgressChange = getRandomInRange(0, 1);
             systemPointsChange = getRandomInRange(1, 3);
-            if (luck < 15) energyChange = 0;
+            if (luck < 20) energyChange = 0;
             break;
         default:
             energyChange = -5;
