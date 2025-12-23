@@ -1,0 +1,262 @@
+body {
+    margin: 0;
+    padding: 20px;
+    background-color: #000; /* 背景底色 */
+    display: flex;
+    justify-content: center;
+}
+
+.button{
+    color: #3a3a3a;
+
+}
+
+.main-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(180deg, #001524 0%, #023047 100%);
+    color: #e0f2f1;
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid #219ebc;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    line-height: 1.6;
+    max-width: 800px;
+    width: 100%;
+}
+
+.header-section {
+    text-align: center;
+    border-bottom: 2px solid #8ecae6;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.header-section h1 {
+    color: #8ecae6;
+    margin: 0;
+    font-variant: small-caps;
+    letter-spacing: 2px;
+}
+
+.header-section small {
+    color: #219ebc;
+    font-style: italic;
+}
+
+/* 状态栏 */
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(0,0,0,0.3);
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.status-item {
+    flex: 1;
+    min-width: 150px;
+}
+
+.status-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.progress-bg {
+    background: #000;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease-in-out;
+}
+
+.energy-fill { background: linear-gradient(90deg, #ffb703, #fb8500); box-shadow: 0 0 5px #fb8500; }
+.epoch-fill { background: linear-gradient(90deg, #219ebc, #8ecae6); box-shadow: 0 0 5px #219ebc; }
+.luck-fill { background: linear-gradient(90deg, #2ecc71, #27ae60); box-shadow: 0 0 5px #2ecc71; }
+
+.status-item small {
+    font-size: 0.8em;
+    display: block;
+    margin-top: 2px;
+}
+
+#hint-energy { color: #ffb703; }
+#hint-progress { color: #8ecae6; }
+
+/* 叙事区 */
+.narrative-box {
+    background: rgba(0,0,0,0.2);
+    padding: 15px;
+    border-left: 4px solid #fb8500;
+    margin-bottom: 20px;
+    font-style: italic;
+    min-height: 60px;
+}
+
+/* 分栏布局 */
+.info-columns {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.panel {
+    flex: 1;
+    min-width: 200px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.status-panel {
+    background: rgba(33, 158, 188, 0.1);
+    border: 1px solid rgba(142, 202, 230, 0.3);
+}
+
+.env-panel {
+    background: rgba(251, 133, 0, 0.05);
+    border: 1px solid rgba(251, 133, 0, 0.3);
+}
+
+.panel h3 { margin-top: 0; }
+.status-panel h3 { color: #ffb703; }
+.env-panel h3 { color: #fb8500; }
+
+.stats-list {
+    list-style: none;
+    padding: 0;
+    font-size: 0.9em;
+}
+
+.stats-list li { margin-bottom: 5px; }
+
+.luck-hint {
+    margin-top: 10px;
+    padding: 8px;
+    background: rgba(46, 204, 113, 0.1);
+    border-radius: 5px;
+    border-left: 3px solid #2ecc71;
+}
+
+/* 选项区 */
+.options-section {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.options-header {
+    color: #8ecae6;
+    margin-top: 0;
+    text-align: center;
+}
+
+.energy-cost-hint {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    color: #ffb703;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr;               /* 默认手机：1列 */
+  gap: 12px;
+}
+
+@media (min-width: 500px) {                 /* ≥500px 宽度时变成2列 */
+  .options-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.option-card {
+    padding: 10px;
+    border: 1px solid #219ebc;
+    border-radius: 5px;
+    background: rgba(33, 158, 188, 0.1);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.option-card:hover {
+    background: rgba(33, 158, 188, 0.3);
+    transform: translateY(-2px);
+}
+
+.option-title { color: #ffb703; font-weight: bold; display: block; margin-bottom: 3px;}
+.option-cost { color: #fb8500; font-size: 0.85em; display: block; margin-top: 5px;}
+.option-desc { font-size: 0.9em; color: #e0f2f1; }
+
+.footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;      /* 左右两端对齐 */
+  align-items: center;                 /* 垂直居中 */
+  font-size: 0.8em;
+  color: #8ecae6;
+  border-top: 1px solid rgba(142, 202, 230, 0.3);
+  padding-top: 10px;
+  padding-left: 10px;                  /* 可选：左边稍微空一点更好看 */
+  padding-right: 10px;                 /* 可选 */
+}
+
+/* 右边容器：保持文字紧凑，不会被拉散 */
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;          /* 时间和状态之间的间距，自己调 */
+  white-space: nowrap; /* 防止文字被拆行 */
+}
+
+/* 可选：按钮样式优化 */
+#reset-button {
+    align-items: center;
+    background-color: #356595e6;
+    color: white;
+    border: 1px solid #a7ceff ;
+    padding: 3px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.evolution-fill { background-color: #9b59b6; } /* 紫色代表进化 */
+
+/* 新增的系统面板样式 */
+.systems-panel { margin-bottom: 15px; }
+.systems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+.system-item {
+    background-color: #0d1117;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #30363d;
+}
+.system-label { font-size: 0.9em; margin-bottom: 4px; }
+
+/* 为每个系统条添加颜色 */
+.system-neuro-fill { background-color: #9b59b6; } /* 紫色 - 智慧 */
+.system-structure-fill { background-color: #e67e22; } /* 橙色 - 坚固 */
+.system-motor-fill { background-color: #e74c3c; } /* 红色 - 力量 */
+.system-metabolism-fill { background-color: #2ecc71; } /* 绿色 - 生命 */
+.system-reproduction-fill { background-color: #ff69b4; }  /* 粉色 - 生命的延续 */
+
+
+
+
+
+
