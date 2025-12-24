@@ -4,11 +4,6 @@ const API_URL = 'https://api.siliconflow.cn/v1/chat/completions'; // 填入你�
 const MODEL_NAME = 'deepseek-ai/DeepSeek-V3.2';
 
 
-/*
-const API_KEY = 'geminiyl'; // 填入你的 Key
-const API_URL = 'https://geminiyl.zeabur.app/v1/chat/completions'; // 填入你的反代地址
-const MODEL_NAME = 'gemini-2.5-flash';
-*/
 
 // ================= 游戏状态核心 =================
 let gameState = {
