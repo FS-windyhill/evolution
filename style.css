@@ -232,6 +232,20 @@ body {
     transition: background-color 0.3s;
 }
 
+/* 可选：按钮样式优化 */
+#btn-reroll {
+    align-items: center;
+    background-color: #953535e6;
+    color: white;
+    border: 1px solid #ffa7a7 ;
+    padding: 3px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
 .evolution-fill { background-color: #9b59b6; } /* 紫色代表进化 */
 
 /* 新增的系统面板样式 */

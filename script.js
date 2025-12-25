@@ -690,11 +690,63 @@ const Controller = {
             await Storage.clear();
             location.reload();
         }
-    }
+    },
+
+    // 👇 新增 handleReroll 函数 👇
+    async handleReroll() {
+        if (gameState.history.length < 2) {
+            alert("还没有对话记录，无法重生成！");
+            return;
+        }
+
+        const btn = document.getElementById('btn-reroll');
+        const originalText = btn.innerHTML; // 保存原本的按钮文字
+        btn.disabled = true;
+        btn.innerHTML = "⏳ 重写中...";
+
+        // 1. 回滚历史记录 (弹出最后两条：AI回复 和 触发该回复的用户指令)
+        const lastAiMsg = gameState.history.pop(); 
+        const lastUserMsgObj = gameState.history.pop(); 
+
+        // 2. 准备重发用户的指令
+        const promptToResend = lastUserMsgObj.content;
+
+        UI.showLoading(); 
+
+        try {
+            console.log("🔄 正在请求 AI 重写...");
+            // 3. 再次调用 AI (AI.call 会自动把 User指令 和 新AI回复 塞回 history)
+            const gameData = await AI.call(promptToResend);
+            
+            // 4. 更新画面并保存
+            this._updateGameScene(gameData);
+            await Storage.save(gameState);
+
+        } catch (e) {
+            console.error("重生成失败", e);
+            UI.showError("重生成失败: " + e.message);
+            
+            // 失败了就把记录塞回去，防止坏档
+            gameState.history.push(lastUserMsgObj);
+            gameState.history.push(lastAiMsg);
+        } finally {
+            // 5. 恢复按钮
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
+    },
+    // 👆 新增结束 👆
 };
+
+
+
 
 // ================= 启动绑定 =================
 window.onload = () => {
     document.getElementById('reset-button').addEventListener('click', () => Controller.resetGame());
+    
+    // 👇 新增这一行绑定 👇
+    document.getElementById('btn-reroll').addEventListener('click', () => Controller.handleReroll());
+    
     Controller.init();
 };
