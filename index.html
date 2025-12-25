@@ -4,7 +4,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>头足纲进化模拟器 v2.1 (存档版)</title>
+    <title>头足纲进化模拟器 v3.0 (纪元演化版)</title>
     <!-- PWA 相关 -->
     <link rel="manifest" href="./manifest.webmanifest">
     <link rel="icon" href="./icon192.png">
@@ -14,11 +14,56 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="stylesheet" href="./style.css">
 
-
+    <!-- 新增大事件弹窗样式 -->
+    <style>
+        #major-event-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: #fff;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .event-content {
+            background-color: #023047;
+            border-left: 5px solid #ffb703;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .event-content h2 {
+            color: #ffb703;
+            margin-top: 0;
+        }
+        .event-content button {
+            background-color: #ffb703;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
 
 </head>
 <body>
 
+    <!-- 您的其余HTML代码保持不变，这里省略 -->
     <div class="main-container">
     <!-- 标题区 -->
     <div class="header-section">
@@ -57,7 +102,7 @@
     <div class="status-item">
       <div class="status-label">
         <span>🌍 纪元：</span>
-        <span id="val-epoch">奥陶纪早期</span>
+        <span id="val-epoch">奥陶纪</span>
       </div>
       <div class="progress-bg">
         <div id="bar-epoch" class="progress-fill epoch-fill" style="width: 15%;"></div>
@@ -89,11 +134,11 @@
     <div class="panel status-panel">
       <h3>🧬 生命状态</h3>
       <ul class="stats-list">
-        <li>🛡️ <b>壳体：</b><span id="stat-shell">直锥形(8cm)</span></li>
-        <li>🧠 <b>神经：</b><span id="stat-neuro">分散神经节</span></li>
-        <li>🚀 <b>动力：</b><span id="stat-power">原始喷水</span></li>
-        <li>👁️ <b>感知：</b><span id="stat-sense">基本避光性</span></li>
-        <li>🐙 <b>繁衍：</b><span id="stat-spawning">体外精团抛洒</span></li>
+        <li>🧠 <b>感知 • 神经：</b><span id="stat-neuro">分散神经节</span></li>
+        <li>🛡️ <b>结构 • 防御：</b><span id="stat-shell">直锥形(8cm)</span></li>
+        <li>🚀 <b>动力 • 运动：</b><span id="stat-power">原始喷水</span></li>
+        <li>👁️ <b>代谢 • 循环：</b><span id="stat-metabolism">原始循环系统</span></li>
+        <li>🐙 <b>生殖 • 繁衍：</b><span id="stat-spawning">体外精团抛洒</span></li>
       </ul>
       <div style="margin-top: 10px; background: #000; height: 8px; border-radius: 4px;">
         <div id="bar-adaptability" style="background: #2ecc71; width: 20%; height: 100%; border-radius: 4px; transition: width 0.5s ease;"></div>
