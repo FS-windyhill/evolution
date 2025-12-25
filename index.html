@@ -58,6 +58,34 @@
             from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
         }
+
+        /* ⭐ 新增：给需要加遮罩的父容器用的样式 */
+        .loading-container {
+            position: relative; /* 这是关键！让遮罩相对于它定位 */
+        }
+
+        /* ⭐ 新增：遮罩本身的样式 */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(2, 48, 71, 0.6); /* 半透明的深蓝色，可自行调整 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            color: #8ecae6;
+            border-radius: 8px; /* 和 panel 的圆角保持一致 */
+            font-family: sans-serif;
+            animation: fadeIn 0.3s ease; /* 淡入效果 */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 
 </head>
@@ -124,14 +152,14 @@
     </div>
 
   <!-- 诗意叙事区 -->
-  <div id="story-text" class="narrative-box">
+  <div id="story-text" class="story-panel loading-container">
     正在连接远古意识库... (AI 初始化中)
   </div>
 
   <!-- 环境与状态分栏 -->
   <div class="info-columns">
     <!-- 状态面板 -->
-    <div class="panel status-panel">
+    <div id="status-panel" class="panel status-panel loading-container">
       <h3>🧬 生命状态</h3>
       <ul class="stats-list">
         <li>🧠 <b>感知 • 神经：</b><span id="stat-neuro">分散神经节</span></li>
@@ -147,7 +175,7 @@
     </div>
 
     <!-- 环境感知 -->
-    <div class="panel env-panel">
+    <div id="env-panel" class="panel env-panel loading-container">
       <h3>🌊 外部环境</h3>
       <div class="env-content">
         <div style="margin-bottom: 8px;"><b>当前坐标：</b><span id="env-location">古特提斯洋</span></div>
@@ -219,7 +247,7 @@
       ⚡ 能量是关键 | 当前能量：<span id="current-energy-display">85</span>
     </div>
     
-    <div id="options-container" class="options-grid">
+    <div id="options-container" class="options-grid loading-container">
        <div style="text-align:center; color: #8ecae6;">正在加载进化可能性...</div>
     </div>
   </div>

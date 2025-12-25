@@ -192,6 +192,12 @@ const UI = {
     },
 
     renderStatus(data) {
+
+        // ⭐ 关键一步：在渲染函数开头移除遮罩 ⭐
+        this.hideLoading(); // 在更新内容前，立刻移除所有加载动画
+        document.getElementById('story-text').innerHTML = data.story || "";
+        
+
         document.getElementById('story-text').innerHTML = data.story || ""; // 允许HTML
         
         const status = data.status || {};
@@ -305,9 +311,40 @@ const UI = {
         document.body.appendChild(eventDiv);
     },
 
+    // 👇 新增一个专门移除遮罩的函数 👇
+    hideLoading() {
+        // 查找页面上所有的遮罩层并移除它们
+        document.querySelectorAll('.loading-overlay').forEach(overlay => overlay.remove());
+    },
+
+    // 👇 用这个新版本替换掉旧的 showLoading 函数 👇
     showLoading() {
-        document.getElementById('options-container').innerHTML = '<div style="text-align:center; padding:20px; color:#8ecae6;">🌌 生命的蓝图正在绘制...</div>';
-        document.getElementById('story-text').innerHTML = '<div style="text-align:center; padding:20px; color:#8ecae6;">⏳ 等待命运的回响...</div>';
+        // 首先，确保移除旧的遮罩，以防万一
+        this.hideLoading();
+
+        // 定义哪些区域需要显示加载动画和对应的提示文字
+        const targets = {
+            'story-text': '⏳ 等待命运的回响...',
+            'options-container': '🌌 生命的蓝图正在绘制...',
+            'status-panel': '🧬 计算生命体征...',
+            'env-panel': '🌊 扫描外部环境...'
+        };
+
+        // 遍历所有目标区域
+        for (const id in targets) {
+            const parentElement = document.getElementById(id);
+            const loadingText = targets[id];
+
+            if (parentElement) {
+                // 创建遮罩 div
+                const overlay = document.createElement('div');
+                overlay.className = 'loading-overlay';
+                overlay.innerHTML = `<span>${loadingText}</span>`;
+                
+                // 将遮罩添加到父元素上
+                parentElement.appendChild(overlay);
+            }
+        }
     },
 
     showError(msg) {
@@ -445,12 +482,45 @@ const AI = {
         console.log("📥 AI 原始返回:", data);
         let content = data.choices[0].message.content;
         
-        // 清洗 Markdown
-        content = content.replace(/```json/g, '').replace(/```/g, '').trim();
-        const jsonStr = content.substring(content.indexOf('{'), content.lastIndexOf('}') + 1);
-        
-        const gameData = JSON.parse(jsonStr);
-        console.log("✅ JSON 解析成功:", gameData);
+        // --- ⭐ 全新的、更安全的解析逻辑开始 ⭐ ---
+        let gameData;
+        try {
+            // 方案A: 尝试直接解析。如果AI很乖，这是最快最高效的。
+            gameData = JSON.parse(content);
+            console.log("✅ (方案A) JSON 直接解析成功!");
+
+        } catch (e) {
+            console.warn("⚠️ (方案A) 直接解析失败，尝试方案B (清洗Markdown)...", e.message);
+            try {
+                // 方案B: 清洗掉AI可能添加的Markdown标记，然后再解析。
+                const cleanedContent = content.replace(/```json/g, '').replace(/```/g, '').trim();
+                gameData = JSON.parse(cleanedContent);
+                console.log("✅ (方案B) 清洗Markdown后解析成功!");
+
+            } catch (e2) {
+                console.error("❌ (方案B) 清洗后依然解析失败，尝试方案C (暴力提取)...", e2.message);
+                try {
+                    // 方案C: 作为最后的手段，暴力提取第一个 '{' 和最后一个 '}' 之间的内容。
+                    // 这能处理 "好的，这是JSON：{...}" 这种情况。
+                    const startIndex = content.indexOf('{');
+                    const endIndex = content.lastIndexOf('}');
+                    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+                        const jsonStr = content.substring(startIndex, endIndex + 1);
+                        gameData = JSON.parse(jsonStr);
+                        console.log("✅ (方案C) 暴力提取JSON成功!");
+                    } else {
+                        throw new Error("在内容中找不到有效的JSON结构。");
+                    }
+                } catch (e3) {
+                    // 如果所有方案都失败了，就彻底放弃。
+                    console.error("❌ 所有JSON解析方案均告失败！请检查AI返回的原始 content。");
+                    console.error("原始 Content:", content);
+                    // 抛出最终的错误，让上层逻辑（如Controller）去处理UI报错。
+                    throw new Error("AI返回了无法解析的数据格式。");
+                }
+            }
+        }
+        // --- ⭐ 解析逻辑结束 ⭐ ---
         
         // 更新历史记录
         this._updateHistory(userPrompt, JSON.stringify(gameData));
@@ -680,9 +750,10 @@ const Controller = {
         }
     },
 
-    _updateGameScene(data) {
+    _updateGameScene(data) { // 这是 Controller 里的函数，但逻辑相关
+        UI.hideLoading(); // 在这里调用是最佳实践，确保任何更新前都清除加载状态
         UI.renderStatus(data);
-        UI.renderOptions(data.options);
+        UI.renderOptions(data.options); 
     },
 
     async resetGame() {

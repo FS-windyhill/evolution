@@ -43,6 +43,7 @@ body {
     font-style: italic;
 }
 
+
 /* 状态栏 */
 .status-bar {
     display: flex;
@@ -93,7 +94,7 @@ body {
 #hint-progress { color: #8ecae6; }
 
 /* 叙事区 */
-.narrative-box {
+.story-panel {
     background: rgba(0,0,0,0.2);
     padding: 15px;
     border-left: 4px solid #fb8500;
